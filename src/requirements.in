@@ -3,6 +3,8 @@ PyPDF2
 jupyterlab
 requests
 dvc
+pandas
+pyarrow
 
 
 torch 

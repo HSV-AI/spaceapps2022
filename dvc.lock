@@ -1,0 +1,25 @@
+schema: '2.0'
+stages:
+  pdf_to_text:
+    cmd: python src/spaceapps2022/pdf_to_text.py data/01_raw/ data/03_primary/texts
+    deps:
+    - path: data/01_raw/
+      md5: fa95671ebae319b577250ccef279ab0f.dir
+      size: 78157641
+      nfiles: 24
+    outs:
+    - path: data/03_primary/texts
+      md5: dccccc0ee3887008b882d2bc00938bda.dir
+      size: 1025779
+      nfiles: 23
+  text_to_parquet:
+    cmd: python src/spaceapps2022/text_to_parquet.py data/03_primary/texts data/04_feature/text.parquet
+    deps:
+    - path: data/03_primary/texts
+      md5: dccccc0ee3887008b882d2bc00938bda.dir
+      size: 1025779
+      nfiles: 23
+    outs:
+    - path: data/04_feature/text.parquet
+      md5: 9b89640ee1c3c603834e93a865d0bc04
+      size: 573254

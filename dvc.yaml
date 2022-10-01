@@ -5,3 +5,10 @@ stages:
       - data/01_raw/
     outs:
       - data/03_primary/texts
+    
+  text_to_parquet:
+    cmd: python src/spaceapps2022/text_to_parquet.py data/03_primary/texts data/04_feature/text.parquet
+    deps:
+      - data/03_primary/texts
+    outs:
+      - data/04_feature/text.parquet
