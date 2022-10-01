@@ -22,3 +22,4 @@ Huntsville AI submission for Space Apps 2022
 
 ### TODO
 - upgrade to cross encoder after sematic search has narrowed it down for better results
+- switch to returning the raw pdf instead of the text
