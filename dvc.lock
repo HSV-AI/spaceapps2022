@@ -7,6 +7,9 @@ stages:
       md5: fa95671ebae319b577250ccef279ab0f.dir
       size: 78157641
       nfiles: 24
+    - path: src/spaceapps2022/pdf_to_text.py
+      md5: 08fae48410b5160bb28dc60756c55b4d
+      size: 1167
     outs:
     - path: data/03_primary/texts
       md5: dccccc0ee3887008b882d2bc00938bda.dir
@@ -19,17 +22,23 @@ stages:
       md5: dccccc0ee3887008b882d2bc00938bda.dir
       size: 1025779
       nfiles: 23
+    - path: src/spaceapps2022/text_to_parquet.py
+      md5: 96c737d1b6a58600e454c7ad668b34dd
+      size: 753
     outs:
     - path: data/04_feature/text.parquet
-      md5: 9b89640ee1c3c603834e93a865d0bc04
-      size: 573254
+      md5: c8cbc234120327f49b38467d53b5af30
+      size: 575641
   parquet_to_embeddings:
     cmd: python src/spaceapps2022/parquet_to_embeddings.py data/04_feature/text.parquet
       data/05_model_input/embeddings.npy
     deps:
     - path: data/04_feature/text.parquet
-      md5: 9b89640ee1c3c603834e93a865d0bc04
-      size: 573254
+      md5: c8cbc234120327f49b38467d53b5af30
+      size: 575641
+    - path: src/spaceapps2022/parquet_to_embeddings.py
+      md5: 31f60a65ca544c9ecaf62ce6133f27f4
+      size: 462
     outs:
     - path: data/05_model_input/embeddings.npy
       md5: f18ae64e712080d71f09b87b85860a27

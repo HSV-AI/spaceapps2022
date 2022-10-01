@@ -3,6 +3,7 @@ stages:
     cmd: python src/spaceapps2022/pdf_to_text.py data/01_raw/ data/03_primary/texts
     deps:
       - data/01_raw/
+      - src/spaceapps2022/pdf_to_text.py
     outs:
       - data/03_primary/texts
     
@@ -10,6 +11,7 @@ stages:
     cmd: python src/spaceapps2022/text_to_parquet.py data/03_primary/texts data/04_feature/text.parquet
     deps:
       - data/03_primary/texts
+      - src/spaceapps2022/text_to_parquet.py
     outs:
       - data/04_feature/text.parquet
     
@@ -17,5 +19,6 @@ stages:
     cmd: python src/spaceapps2022/parquet_to_embeddings.py data/04_feature/text.parquet data/05_model_input/embeddings.npy
     deps:
       - data/04_feature/text.parquet
+      - src/spaceapps2022/parquet_to_embeddings.py
     outs:
       - data/05_model_input/embeddings.npy
