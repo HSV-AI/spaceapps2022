@@ -5,6 +5,7 @@ requests
 dvc
 pandas
 pyarrow
+gradio
 
 
 torch 

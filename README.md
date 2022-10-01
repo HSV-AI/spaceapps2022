@@ -17,3 +17,8 @@ Huntsville AI submission for Space Apps 2022
 
 
 3. Somewhere, we'll have to make a video to present - not sure how to go about that except for doing something cheap or stupid on my phone.
+
+
+
+### TODO
+- upgrade to cross encoder after sematic search has narrowed it down for better results
