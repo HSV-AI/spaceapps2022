@@ -1,0 +1,15 @@
+pip-tools
+PyPDF2
+jupyterlab
+requests
+dvc
+
+
+torch 
+torchvision 
+torchaudio 
+--extra-index-url https://download.pytorch.org/whl/cu116
+
+transformers
+sentence-transformers
+pytorch-lightning
