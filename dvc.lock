@@ -23,3 +23,14 @@ stages:
     - path: data/04_feature/text.parquet
       md5: 9b89640ee1c3c603834e93a865d0bc04
       size: 573254
+  parquet_to_embeddings:
+    cmd: python src/spaceapps2022/parquet_to_embeddings.py data/04_feature/text.parquet
+      data/05_model_input/embeddings.npy
+    deps:
+    - path: data/04_feature/text.parquet
+      md5: 9b89640ee1c3c603834e93a865d0bc04
+      size: 573254
+    outs:
+    - path: data/05_model_input/embeddings.npy
+      md5: f18ae64e712080d71f09b87b85860a27
+      size: 70784

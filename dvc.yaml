@@ -12,3 +12,10 @@ stages:
       - data/03_primary/texts
     outs:
       - data/04_feature/text.parquet
+    
+  parquet_to_embeddings:
+    cmd: python src/spaceapps2022/parquet_to_embeddings.py data/04_feature/text.parquet data/05_model_input/embeddings.npy
+    deps:
+      - data/04_feature/text.parquet
+    outs:
+      - data/05_model_input/embeddings.npy
