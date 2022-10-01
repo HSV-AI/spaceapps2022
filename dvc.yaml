@@ -1,4 +1,11 @@
 stages:
+  get_data:
+    cmd: python src/spaceapps2022/get_sti_data.py data/02_intermediate/data.csv
+    deps:
+      - src/spaceapps2022/get_sti_data.py
+    outs:
+      - data/02_intermediate/data.csv
+
   pdf_to_text:
     cmd: python src/spaceapps2022/pdf_to_text.py data/01_raw/ data/03_primary/texts
     deps:

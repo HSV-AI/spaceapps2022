@@ -4,9 +4,9 @@ stages:
     cmd: python src/spaceapps2022/pdf_to_text.py data/01_raw/ data/03_primary/texts
     deps:
     - path: data/01_raw/
-      md5: fa95671ebae319b577250ccef279ab0f.dir
-      size: 78157641
-      nfiles: 24
+      md5: 29d43166b3361f3ddbd94df50eff5495.dir
+      size: 1598106418
+      nfiles: 27
     - path: src/spaceapps2022/pdf_to_text.py
       md5: 08fae48410b5160bb28dc60756c55b4d
       size: 1167
@@ -37,9 +37,19 @@ stages:
       md5: c8cbc234120327f49b38467d53b5af30
       size: 575641
     - path: src/spaceapps2022/parquet_to_embeddings.py
-      md5: 31f60a65ca544c9ecaf62ce6133f27f4
-      size: 462
+      md5: 73743818ea51c647ddbb09753c528b3c
+      size: 441
     outs:
     - path: data/05_model_input/embeddings.npy
       md5: f18ae64e712080d71f09b87b85860a27
       size: 70784
+  get_data:
+    cmd: python src/spaceapps2022/get_sti_data.py data/02_intermediate/data.csv
+    deps:
+    - path: src/spaceapps2022/get_sti_data.py
+      md5: 64b199960d5ca1d2cfb29990e7437879
+      size: 2686
+    outs:
+    - path: data/02_intermediate/data.csv
+      md5: b441be851fc8fa3fa15bf12cce90feed
+      size: 720
