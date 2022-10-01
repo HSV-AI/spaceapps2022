@@ -1,0 +1,7 @@
+stages:
+  pdf_to_text:
+    cmd: python src/spaceapps2022/pdf_to_text.py data/01_raw/ data/03_primary/texts
+    deps:
+      - data/01_raw/
+    outs:
+      - data/03_primary/texts

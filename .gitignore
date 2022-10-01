@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Disabling so we don't push or deal with cache files
+dvc.lock
