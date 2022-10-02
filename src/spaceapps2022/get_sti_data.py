@@ -31,7 +31,21 @@ random.seed(4)
 import time
 import numpy as np
 
-def get_data():
+def make_request(url):
+    # try:
+    res = r.request("GET", url)
+    i = 1
+    while res.status_code != 200:
+        print(f"Request failed with status code {res.status_code}")
+        if res.status_code == 429:
+            print("Rate limited, waiting {i} seconds")
+            time.sleep(i)
+        res = r.request("GET", url)
+        i+=1
+    return res
+
+
+def get_data(limit):
     meta = get_metadata()
     BASE_URL = "https://ntrs.nasa.gov/api/citations/"
     aval = 0
@@ -41,17 +55,9 @@ def get_data():
     i = 0
     counts = defaultdict(int)
 
-    def make_request(url):
-        # try:
-        res = r.request("GET", url)
-        while res.status_code != 200:
-            time.sleep(np.random.randint(1, 30))
-            res = r.request("GET", url)
-        return res
-
     keys = list(meta.keys())
     random.shuffle(keys)
-    keys = keys[:10]
+    keys = keys[:limit]
     urls = [BASE_URL + key for key in keys]
     # urls = [BASE_URL + key + '/download' for key in keys]
     # from multiprocessing import Pool
@@ -100,12 +106,12 @@ def get_data():
 
 @click.command()
 @click.argument("parquet_path", type=click.Path())
-def main(parquet_path):
-    ids, pdfs, texts = get_data()
+@click.argument("limit", type=int)
+def main(parquet_path, limit):
+    ids, pdfs, texts = get_data(limit)
     df = pd.DataFrame({'id': ids, 'pdf': pdfs, 'text': texts})
     df.to_csv(parquet_path, index=False)
 
 
 if __name__ == '__main__':
     main()
-    

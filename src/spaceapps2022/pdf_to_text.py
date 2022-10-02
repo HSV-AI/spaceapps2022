@@ -48,7 +48,7 @@ def main(pdf_dir, output_dir):
     output_dir = Path(output_dir)
     output_dir.mkdir(exist_ok=True)
 
-    image_dir = Path(output_dir / ".." / "images")
+    image_dir = Path(output_dir / "images")
     image_dir.mkdir(exist_ok=True)
 
     for pdf_path in pdf_dir.glob('*.pdf'):

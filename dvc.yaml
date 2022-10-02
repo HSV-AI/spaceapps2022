@@ -1,26 +1,45 @@
+vars:
+  - limit: 100
+
+
 stages:
   get_data:
-    cmd: python src/spaceapps2022/get_sti_data.py data/02_intermediate/data.csv
+    cmd: python src/spaceapps2022/get_sti_data.py data/02_intermediate/data.csv ${limit}
     deps:
       - src/spaceapps2022/get_sti_data.py
+      - data/01_raw/ntrs-public-metadata.json
     outs:
       - data/02_intermediate/data.csv
 
-  pdf_to_text:
-    cmd: python src/spaceapps2022/pdf_to_text.py data/01_raw/ data/03_primary/texts
+
+  get_files:
+    cmd: python src/spaceapps2022/get_sti_files.py data/02_intermediate/data.csv data/01_raw
     deps:
-      - data/01_raw/
-      - src/spaceapps2022/pdf_to_text.py
+      - src/spaceapps2022/get_sti_data.py
+      - data/02_intermediate/data.csv
     outs:
-      - data/03_primary/texts
+      - data/01_raw/texts
+      - data/01_raw/pdfs
+
+
+  # pdf_to_text:
+  #   cmd: python src/spaceapps2022/pdf_to_text.py data/01_raw/ data/03_primary/texts
+  #   deps:
+  #     - data/01_raw/
+  #     - src/spaceapps2022/pdf_to_text.py
+  #   outs:
+  #     - data/03_primary/texts
     
+
   text_to_parquet:
-    cmd: python src/spaceapps2022/text_to_parquet.py data/03_primary/texts data/04_feature/text.parquet
+    cmd: python src/spaceapps2022/text_to_parquet.py data/01_raw/texts data/04_feature/text.parquet
     deps:
-      - data/03_primary/texts
+      # - data/03_primary/texts
+      - data/01_raw/texts
       - src/spaceapps2022/text_to_parquet.py
     outs:
       - data/04_feature/text.parquet
+
     
   parquet_to_embeddings:
     cmd: python src/spaceapps2022/parquet_to_embeddings.py data/04_feature/text.parquet data/05_model_input/embeddings.npy
