@@ -18,7 +18,7 @@ import numpy as np
 
 def make_request(url):
     # try:
-    res = r.request("GET", url)
+    res = r.request("GET", url, timeout=60)
     i = 1
     if res.status_code != 200:
         print(f"Request failed with status code {res.status_code}")
@@ -32,8 +32,9 @@ def make_request(url):
 
 def get_file(url, id, ext, output_path):
     res = make_request(url)
-    with open(output_path + f"/{id}.{ext}", 'wb') as f:
-        f.write(res.content)
+    if res.status_code == 200:
+        with open(output_path + f"/{id}.{ext}", 'wb') as f:
+            f.write(res.content)
 
 def get_data(df, output_dir):
     texts = df['text'].tolist()
@@ -49,7 +50,7 @@ def get_data(df, output_dir):
     texts_dir = Path(output_dir + "/texts")
     texts_dir.mkdir(exist_ok=True)
 
-    # [get_file(url, id, "pdf", str(pdfs_dir)) for url, id in zip(pdf_urls, ids)]
+    [get_file(url, id, "pdf", str(pdfs_dir)) for url, id in zip(pdf_urls, ids)]
     [get_file(url, id, "txt", str(texts_dir)) for url, id in zip(text_urls, ids)]
 
 
