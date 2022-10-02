@@ -99,4 +99,4 @@ with gr.Blocks() as demo:
 #     # outputs=[gr.outputs.File("PDFs"), gr.outputs.Label(label="Scores"), gr.outputs.Textbox(label="Raw Text")],
 #     examples=examples,
 # )
-demo.launch(share=True)   
+demo.launch(server_name="0.0.0.0")   
