@@ -6,7 +6,7 @@ dvc
 pandas
 pyarrow
 gradio
-
+icecream
 
 torch 
 torchvision 
