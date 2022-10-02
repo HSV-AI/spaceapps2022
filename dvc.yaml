@@ -49,3 +49,9 @@ stages:
       - src/spaceapps2022/parquet_to_embeddings.py
     outs:
       - data/05_model_input/embeddings.npy
+
+  parquet_to_topics:
+    cmd: python src/spaceapps2022/parquet_to_topics.py data/04_feature/text.parquet
+    deps:
+      - data/04_feature/text.parquet
+      - src/spaceapps2022/parquet_to_topics.py

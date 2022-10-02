@@ -16,5 +16,5 @@ torchaudio
 transformers
 sentence-transformers
 pytorch-lightning
-
+bertopic
 joblib==1.1.0
