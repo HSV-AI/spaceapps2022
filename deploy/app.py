@@ -50,11 +50,12 @@ def semantic_search(text, k):
 
 
 examples = [
-    ["Zeus", 1],
+    ["mars gravity", 5],
+    ["moments of inertia", 5],
+    ["effective heat material", 5],
+    ["lunar moisture content", 5],
     ["god of war", 2],
-    ["mars gravity", 1],
-    ["moments of inertia", 1],
-    ["The Moon is a barren, rocky world without air or water. It has dark, mysterious craters and only one-eighth the gravity of Earth. It is the only place beyond Earth where humans have set foot. The Moon has been the goal of human exploration.", 1],
+    ["Zeus", 1],
 ]
 
 with gr.Blocks() as demo:
@@ -67,7 +68,7 @@ with gr.Blocks() as demo:
             with gr.Column():
                 input = [gr.Textbox(label="Query", default="third rock from the sun"),
                         gr.Slider(1, 10, 1, step=1, label='Number of results', default=1)]
-                abs_button = gr.Button("Search")
+                abs_button = gr.Button("Explore")
             with gr.Column():
                 # output = [gr.outputs.File(label="PDFs"), gr.outputs.Textbox(label="Scores"), gr.outputs.Textbox(label="Raw Text")]
                 output = [gr.outputs.Textbox(label="Titles"), gr.outputs.Textbox(label="Scores"), gr.outputs.Textbox(label="Abstracts")]
@@ -84,7 +85,7 @@ with gr.Blocks() as demo:
             with gr.Column():
                 input = [gr.Textbox(label="Query", default="third rock from the sun"),
                         gr.Slider(1, 10, 1, step=1, label='Number of results', default=1)]
-                pdf_button = gr.Button("Search")
+                pdf_button = gr.Button("Explore")
             with gr.Column():
                 output = [gr.outputs.File(label="PDFs"), gr.outputs.Textbox(label="Scores"), gr.outputs.Textbox(label="Raw Text")]
 
