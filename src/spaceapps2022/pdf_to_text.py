@@ -34,7 +34,7 @@ def extract_images(pdf_path, output_path):
             if read_pdf.isEncrypted:
                 read_pdf.decrypt("")
             for image in read_pdf.getPage(page_num).images:
-                    filepath = output_path / (pdf_path.stem + image.name)
+                    filepath = output_path / ".." / (pdf_path.stem + image.name)
                     with open(filepath, "wb") as fp:
                         fp.write(image.data)
         except Exception as e:
@@ -57,7 +57,7 @@ def main(pdf_dir, output_dir):
         text_path.write_text(text)
 
         # Now extract the images from the PDF
-        extract_images(pdf_path, image_dir)
+        # extract_images(pdf_path, image_dir)
 
 if __name__ == '__main__':
     main()

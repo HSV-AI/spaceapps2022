@@ -1,5 +1,5 @@
 vars:
-  - limit: 100
+  - limit: 10
 
 
 stages:
@@ -23,12 +23,13 @@ stages:
 
 
   # pdf_to_text:
-  #   cmd: python src/spaceapps2022/pdf_to_text.py data/01_raw/ data/03_primary/texts
+  #   cmd: python src/spaceapps2022/pdf_to_text.py data/01_raw/pdfs data/03_primary/texts
   #   deps:
-  #     - data/01_raw/
+  #     - data/01_raw/pdfs
   #     - src/spaceapps2022/pdf_to_text.py
   #   outs:
   #     - data/03_primary/texts
+  #     - data/03_primary/images
     
 
   text_to_parquet:

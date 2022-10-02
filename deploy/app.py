@@ -32,8 +32,8 @@ def semantic_search(text, k):
     return files, scores, texts
 
 examples = [
-    ["third rock form the sun", 1],
-    ["fourth rock form the sun", 1],
+    ["third rock from the sun", 1],
+    ["fourth rock from the sun", 1],
     ["moons", 1],
     ["The Moon is a barren, rocky world without air or water. It has dark, mysterious craters and only one-eighth the gravity of Earth. It is the only place beyond Earth where humans have set foot. The Moon has been the goal of human exploration.", 1],
 ]

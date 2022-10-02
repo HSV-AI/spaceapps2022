@@ -1,76 +1,76 @@
 schema: '2.0'
 stages:
   pdf_to_text:
-    cmd: python src/spaceapps2022/pdf_to_text.py data/01_raw/ data/03_primary/texts
+    cmd: python src/spaceapps2022/pdf_to_text.py data/01_raw/pdfs data/03_primary/texts
     deps:
-    - path: data/01_raw/
-      md5: 29d43166b3361f3ddbd94df50eff5495.dir
-      size: 1598106418
-      nfiles: 27
+    - path: data/01_raw/pdfs
+      md5: aea3adc4d698c9b7f93502cdcb39cba7.dir
+      size: 7064665
+      nfiles: 6
     - path: src/spaceapps2022/pdf_to_text.py
-      md5: 08fae48410b5160bb28dc60756c55b4d
-      size: 1167
+      md5: 9c44cd2cc820e4f97f44188cf2915b7f
+      size: 2015
     outs:
     - path: data/03_primary/texts
-      md5: dccccc0ee3887008b882d2bc00938bda.dir
-      size: 1025779
-      nfiles: 23
+      md5: 815c117af9c100ec1def42078852b9b5.dir
+      size: 264666
+      nfiles: 6
   text_to_parquet:
     cmd: python src/spaceapps2022/text_to_parquet.py data/01_raw/texts data/04_feature/text.parquet
     deps:
     - path: data/01_raw/texts
-      md5: e3d82328c4dbef597e3639ed4a58a543.dir
-      size: 2576410
-      nfiles: 55
+      md5: 70f538dc03b73b7e6d3c1b80e2c3784b.dir
+      size: 279019
+      nfiles: 6
     - path: src/spaceapps2022/text_to_parquet.py
-      md5: 96c737d1b6a58600e454c7ad668b34dd
-      size: 753
+      md5: a21def4a9c7a1542f41dd3f766068625
+      size: 758
     outs:
     - path: data/04_feature/text.parquet
-      md5: 6054a770b75cddd69b78803115749e95
-      size: 1451836
+      md5: 5dfc038175c3e1a1a1c46c378bbbe8e7
+      size: 157439
   parquet_to_embeddings:
     cmd: python src/spaceapps2022/parquet_to_embeddings.py data/04_feature/text.parquet
       data/05_model_input/embeddings.npy
     deps:
     - path: data/04_feature/text.parquet
-      md5: 6054a770b75cddd69b78803115749e95
-      size: 1451836
+      md5: 5dfc038175c3e1a1a1c46c378bbbe8e7
+      size: 157439
     - path: src/spaceapps2022/parquet_to_embeddings.py
       md5: 73743818ea51c647ddbb09753c528b3c
       size: 441
     outs:
     - path: data/05_model_input/embeddings.npy
-      md5: 81fb21bbac5c11e92ee41e8186b476d4
-      size: 169088
+      md5: 494ea38ab32619544eb47113c90a123b
+      size: 18560
   get_data:
-    cmd: python src/spaceapps2022/get_sti_data.py data/02_intermediate/data.csv 100
+    cmd: python src/spaceapps2022/get_sti_data.py data/02_intermediate/data.csv 10
     deps:
     - path: data/01_raw/ntrs-public-metadata.json
       md5: d24fb10aec6a26a32e2864282cb7ba1b
       size: 1519948777
     - path: src/spaceapps2022/get_sti_data.py
-      md5: 918f9bd3ae47cfc4fcaec219d15d6775
-      size: 2872
+      md5: bdb4e149780945563c1c4b48ab79df6f
+      size: 2896
     outs:
     - path: data/02_intermediate/data.csv
-      md5: bce7635faf2a99a643c1e5cd6a8e1c7f
-      size: 6502
+      md5: bb5dc2cb22ba7370a0fa166513306775
+      size: 720
   get_files:
     cmd: python src/spaceapps2022/get_sti_files.py data/02_intermediate/data.csv data/01_raw
     deps:
     - path: data/02_intermediate/data.csv
-      md5: bce7635faf2a99a643c1e5cd6a8e1c7f
-      size: 6502
+      md5: bb5dc2cb22ba7370a0fa166513306775
+      size: 720
     - path: src/spaceapps2022/get_sti_data.py
-      md5: 918f9bd3ae47cfc4fcaec219d15d6775
-      size: 2872
+      md5: bdb4e149780945563c1c4b48ab79df6f
+      size: 2896
     outs:
     - path: data/01_raw/pdfs
-      md5: 04392b12c5c7daa2be5dee4bec2a1a7d.dir
-      size: 135350687
-      nfiles: 55
+      md5: aea3adc4d698c9b7f93502cdcb39cba7.dir
+      size: 7064665
+      nfiles: 6
     - path: data/01_raw/texts
-      md5: e3d82328c4dbef597e3639ed4a58a543.dir
-      size: 2576410
-      nfiles: 55
+      md5: 70f538dc03b73b7e6d3c1b80e2c3784b.dir
+      size: 279019
+      nfiles: 6

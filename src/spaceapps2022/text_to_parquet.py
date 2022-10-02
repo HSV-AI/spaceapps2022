@@ -16,7 +16,7 @@ def main(text_dir, output_path):
     data = []
     for text_path in text_paths:
         text = text_path.read_text()
-        pdf_path = "data/01_raw/" + text_path.stem + ".pdf"
+        pdf_path = "data/01_raw/pdfs/" + text_path.stem + ".pdf"
         data.append({
             'text': text,
             'text_path': str(text_path),

@@ -58,6 +58,7 @@ def get_data(limit):
     keys = list(meta.keys())
     random.shuffle(keys)
     keys = keys[:limit]
+    keys = sorted(keys)
     urls = [BASE_URL + key for key in keys]
     # urls = [BASE_URL + key + '/download' for key in keys]
     # from multiprocessing import Pool
