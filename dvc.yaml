@@ -1,5 +1,5 @@
 vars:
-  - limit: 10
+  - limit: 1000
 
 
 stages:
@@ -31,6 +31,14 @@ stages:
   #     - data/03_primary/texts
   #     - data/03_primary/images
     
+  meta_to_abstracts:
+    cmd: python src/spaceapps2022/meta_to_abstracts.py data/01_raw/ntrs-public-metadata.json data/04_feature/abstracts.parquet
+    deps:
+      # - data/03_primary/texts
+      - data/01_raw/ntrs-public-metadata.json
+      - src/spaceapps2022/meta_to_abstracts.py
+    outs:
+      - data/04_feature/abstracts.parquet
 
   text_to_parquet:
     cmd: python src/spaceapps2022/text_to_parquet.py data/01_raw/texts data/04_feature/text.parquet
@@ -49,3 +57,12 @@ stages:
       - src/spaceapps2022/parquet_to_embeddings.py
     outs:
       - data/05_model_input/embeddings.npy
+
+
+  abstracts_to_embeddings:
+    cmd: python src/spaceapps2022/abstracts_to_embeddings.py data/04_feature/abstracts.parquet data/05_model_input/abstract_embeddings.npy
+    deps:
+      - data/04_feature/abstracts.parquet
+      - src/spaceapps2022/abstracts_to_embeddings.py
+    outs:
+      - data/05_model_input/abstract_embeddings.npy

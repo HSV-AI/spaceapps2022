@@ -49,7 +49,7 @@ def get_data(df, output_dir):
     texts_dir = Path(output_dir + "/texts")
     texts_dir.mkdir(exist_ok=True)
 
-    [get_file(url, id, "pdf", str(pdfs_dir)) for url, id in zip(pdf_urls, ids)]
+    # [get_file(url, id, "pdf", str(pdfs_dir)) for url, id in zip(pdf_urls, ids)]
     [get_file(url, id, "txt", str(texts_dir)) for url, id in zip(text_urls, ids)]
 
 
