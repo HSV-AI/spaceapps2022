@@ -8,7 +8,7 @@ import numpy as np
 @click.argument('input_parquet')
 @click.argument('output')
 def main(input_parquet, output):
-    model = SentenceTransformer('msmarco-distilbert-base-v4')
+    model = SentenceTransformer('BAAI/bge-small-en-v1.5', device='cuda')
     df = pd.read_parquet(input_parquet)
     abstracts = df['abstract'].tolist()
     titles = df['title'].tolist()

@@ -8,7 +8,7 @@ embeddings = np.load('data/05_model_input/embeddings.npy')
 abs_embeddings = np.load('data/05_model_input/abstract_embeddings.npy')
 df = pd.read_parquet('data/04_feature/text.parquet')
 abs_df = pd.read_parquet('data/04_feature/abstracts.parquet')
-model = SentenceTransformer('msmarco-distilbert-base-v4')
+model = SentenceTransformer('BAAI/bge-small-en-v1.5')
 
 
 # TODO upgrade to cross-encoder after semantic search
@@ -66,12 +66,12 @@ with gr.Blocks() as demo:
         gr.Markdown("This makes use of the easily available meta data for STI documents (~500k).")
         with gr.Row():
             with gr.Column():
-                input = [gr.Textbox(label="Query", default="third rock from the sun"),
-                        gr.Slider(1, 10, 1, step=1, label='Number of results', default=1)]
+                input = [gr.Textbox(label="Query", value="third rock from the sun"),
+                        gr.Slider(1, 10, 1, step=1, label='Number of results', value=1)]
                 abs_button = gr.Button("Explore")
             with gr.Column():
                 # output = [gr.outputs.File(label="PDFs"), gr.outputs.Textbox(label="Scores"), gr.outputs.Textbox(label="Raw Text")]
-                output = [gr.outputs.Textbox(label="Titles"), gr.outputs.Textbox(label="Scores"), gr.outputs.Textbox(label="Abstracts")]
+                output = [gr.components.Textbox(label="Titles"), gr.components.Textbox(label="Scores"), gr.components.Textbox(label="Abstracts")]
 
         abs_button.click(semantic_search_abstracts, input, output)
         gr.Examples(examples=examples, inputs=input)
@@ -83,11 +83,11 @@ with gr.Blocks() as demo:
         gr.Markdown("If it errors, that means something went wrong with the PDF download.")
         with gr.Row():
             with gr.Column():
-                input = [gr.Textbox(label="Query", default="third rock from the sun"),
-                        gr.Slider(1, 10, 1, step=1, label='Number of results', default=1)]
+                input = [gr.Textbox(label="Query", value="third rock from the sun"),
+                        gr.Slider(1, 10, 1, step=1, label='Number of results', value=1)]
                 pdf_button = gr.Button("Explore")
             with gr.Column():
-                output = [gr.outputs.File(label="PDFs"), gr.outputs.Textbox(label="Scores"), gr.outputs.Textbox(label="Raw Text")]
+                output = [gr.components.File(label="PDFs"), gr.components.Textbox(label="Scores"), gr.components.Textbox(label="Raw Text")]
 
         pdf_button.click(semantic_search, input, output)
         gr.Examples(examples=examples, inputs=input)

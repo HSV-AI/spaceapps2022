@@ -3,6 +3,12 @@ vars:
 
 
 stages:
+
+  download_file:
+    cmd: wget --directory-prefix=data/01_raw https://www.sti.nasa.gov/docs/ntrs-public-metadata.json.gz && gunzip data/01_raw/ntrs-public-metadata.json.gz
+    outs:
+      - data/01_raw/ntrs-public-metadata.json
+
   get_data:
     cmd: python src/spaceapps2022/get_sti_data.py data/02_intermediate/data.csv ${limit}
     deps:
@@ -67,8 +73,8 @@ stages:
     outs:
       - data/05_model_input/abstract_embeddings.npy
 
-  parquet_to_topics:
-    cmd: python src/spaceapps2022/parquet_to_topics.py data/04_feature/text.parquet
-    deps:
-      - data/04_feature/text.parquet
-      - src/spaceapps2022/parquet_to_topics.py
+  # parquet_to_topics:
+  #   cmd: python src/spaceapps2022/parquet_to_topics.py data/04_feature/abstracts.parquet data/05_model_input/bertopics.npy
+  #   deps:
+  #     - data/04_feature/text.parquet
+  #     - src/spaceapps2022/parquet_to_topics.py

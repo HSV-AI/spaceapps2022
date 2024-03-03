@@ -1,3 +1,18 @@
+# Updates
+
+Updated dependencies to be current:
+
+- jupyterlab==4.1.2
+- requests==2.31.0
+- dvc==3.48.1
+- dvc-s3==3.0.1
+- pandas==1.5.0
+- pyarrow==9.0.0
+- gradio==4.19.2
+- torch==2.2.1
+- sentence-transformers==2.5.1
+- bertopic==0.16.0
+
 # spaceapps2022
 Huntsville AI submission for Space Apps 2022
 

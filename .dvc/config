@@ -1,0 +1,4 @@
+[core]
+    remote = hsvai-s3
+['remote "hsvai-s3"']
+    url = s3://hsvai-spaceapps-2022

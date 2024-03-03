@@ -21,7 +21,7 @@ def main(input_parquet, output):
 
     df = pd.read_parquet(input_parquet)
 
-    documents = df['text'].tolist()
+    documents = df['abstract'].tolist()
     topics, probs = topic_model.fit_transform(documents)
 
     # Initial work to print. Eventually need to do something interesting with this.

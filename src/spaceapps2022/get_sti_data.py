@@ -1,16 +1,21 @@
+
+from pathlib import Path
+import json
+from collections import defaultdict
+import random
+import time
+import requests as r
 import click
 import pandas as pd
-from pathlib import Path
 
-import json
-import os
-import pandas as pd
-from pathlib import Path
+random.seed(4)
 
 def get_metadata():
+    print("Loading metadata from data/01_raw/ntrs-public-metadata.json")
     metadata_path = Path("data/01_raw/ntrs-public-metadata.json")
-    with open(metadata_path, 'r') as f:
+    with open(metadata_path, 'r', encoding="utf-8") as f:
         metadata = json.load(f)
+    print("Done loading metadata")
     return metadata
 
 def get_metadata_df():
@@ -23,15 +28,9 @@ def get_metadata_df_by_year(year):
     df = df[df['year'] == year]
     return df
 
-import requests as r
-from icecream import ic
-from collections import defaultdict
-import random
-random.seed(4)
-import time
-import numpy as np
 
 def make_request(url):
+    print(f'Retrieving {url}')
     # try:
     res = r.request("GET", url)
     i = 1
@@ -50,8 +49,6 @@ def get_data(limit):
     BASE_URL = "https://ntrs.nasa.gov/api/citations/"
     aval = 0
     not_aval = 0
-    pdf = 0
-    text = 0
     i = 0
     counts = defaultdict(int)
 
@@ -92,9 +89,14 @@ def get_data(limit):
                 ids.append(key)
                 if 'pdf' in links:
                     pdfs.append(links['pdf'])
+                else:
+                    pdfs.append("N/A")
 
                 if "fulltext" in links:
                     texts.append(links['fulltext'])
+                else:
+                    texts.append("N/A")
+
                 aval += 1
             else:
                 print('error')

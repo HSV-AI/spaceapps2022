@@ -1,25 +1,20 @@
+
+from pathlib import Path
+
+import random
+import time
+import requests as r
+
 import click
 import pandas as pd
-from pathlib import Path
 
-import json
-import os
-import pandas as pd
-from pathlib import Path
-
-import requests as r
-from icecream import ic
-from collections import defaultdict
-import random
 random.seed(4)
-import time
-import numpy as np
-
+BASE_URL = "https://ntrs.nasa.gov"
 
 def make_request(url):
-    # try:
+    print(f'Retrieving {url}')
     res = r.request("GET", url, timeout=60)
-    i = 1
+    time.sleep(1)
     if res.status_code != 200:
         print(f"Request failed with status code {res.status_code}")
         print(url)
@@ -30,10 +25,10 @@ def make_request(url):
         i+=1
     return res
 
-def get_file(url, id, ext, output_path):
+def get_file(url, key, ext, output_path):
     res = make_request(url)
     if res.status_code == 200:
-        with open(output_path + f"/{id}.{ext}", 'wb') as f:
+        with open(output_path + f"/{key}.{ext}", 'wb') as f:
             f.write(res.content)
 
 def get_data(df, output_dir):
@@ -41,7 +36,6 @@ def get_data(df, output_dir):
     pdfs = df['pdf'].tolist()
     ids = df['id'].tolist()
 
-    BASE_URL = "https://ntrs.nasa.gov"
 
     pdf_urls = [f"{BASE_URL}{file}" for id, file in zip(ids, pdfs)]
     text_urls = [f"{BASE_URL}{file}" for id, file in zip(ids, texts)]
@@ -58,7 +52,12 @@ def get_data(df, output_dir):
 @click.argument("csv_path", type=click.Path())
 @click.argument("output_dir", type=click.Path())
 def main(csv_path, output_dir):
-    df = pd.read_csv(csv_path)
+    df = pd.read_csv(csv_path, dtype={
+        'id': 'int64',
+        'pdf': 'string',
+        'text': 'string'},
+        na_filter = False)
+    df = df[(df["pdf"] != "N/A") & (df["text"] != "N/A")]
     get_data(df, output_dir)
 
 
