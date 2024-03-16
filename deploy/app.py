@@ -1,29 +1,30 @@
 import gradio as gr
 import numpy as np
-from sentence_transformers import util, SentenceTransformer
+from sentence_transformers import SentenceTransformer
 import pandas as pd
+import chromadb
 
+chroma_client = chromadb.PersistentClient(path="../data/05_model_input/chromadb")
+collection = chroma_client.get_or_create_collection(name="spaceapps")
 
-embeddings = np.load('data/05_model_input/embeddings.npy')
-abs_embeddings = np.load('data/05_model_input/abstract_embeddings.npy')
-df = pd.read_parquet('data/04_feature/text.parquet')
-abs_df = pd.read_parquet('data/04_feature/abstracts.parquet')
 model = SentenceTransformer('BAAI/bge-small-en-v1.5')
 
 
 # TODO upgrade to cross-encoder after semantic search
 def semantic_search_abstracts(text, k):
     text_embed = model.encode(text)
-    # NOTE using cosine similarity here, but can use other metrics
-    hits = util.semantic_search(text_embed, abs_embeddings, top_k=k)
+    results = collection.query(
+        query_embeddings=text_embed.tolist(),
+        n_results=k
+    )
     scores = []
     titles = []
     texts = []
-    for i, hit in enumerate(hits[0]):
-        id = hit['corpus_id']
-        scores.append(hit['score'])
-        texts.append(abs_df.iloc[id]['abstract'])
-        titles.append(abs_df.iloc[id]['title'])
+
+    for id, score, doc in zip(results['ids'], results['distances'], results['documents']):
+        scores.append(score)
+        texts.append(doc)
+        titles.append("unknown")
 
     # print(type(text))
     if len(texts) == 1:
