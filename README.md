@@ -13,6 +13,13 @@ Updated dependencies to be current:
 - sentence-transformers==2.5.1
 - bertopic==0.16.0
 
+# ChromaDB
+
+Switched the storage of the document embeddings to use chromadb instead of the custom approach we built initially. Interesting metrics:
+
+- Abstract Embeddings stored by numpy uses 814M of storage
+- Same embeddings stored in chromadb along with the text value uses 8G of storage
+
 # spaceapps2022
 Huntsville AI submission for Space Apps 2022
 
@@ -33,8 +40,3 @@ Huntsville AI submission for Space Apps 2022
 
 3. Somewhere, we'll have to make a video to present - not sure how to go about that except for doing something cheap or stupid on my phone.
 
-
-
-### TODO
-- upgrade to cross encoder after sematic search has narrowed it down for better results
-- upgrade requests to scrapy or something better
