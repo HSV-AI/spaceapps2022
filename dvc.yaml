@@ -73,6 +73,16 @@ stages:
     outs:
       - data/05_model_input/abstract_embeddings.npy
 
+  embeddings_to_chromadb:
+    cmd: python src/spaceapps2022/embeddings_to_chromadb.py data/04_feature/abstracts.parquet data/05_model_input/abstract_embeddings.npy data/05_model_input/chromadb
+    deps:
+      - data/04_feature/abstracts.parquet
+      - data/05_model_input/abstract_embeddings.npy
+      - src/spaceapps2022/embeddings_to_chromadb.py
+    # outs:
+    #   - data/05_model_input/abstract_embeddings.npy
+
+
   # parquet_to_topics:
   #   cmd: python src/spaceapps2022/parquet_to_topics.py data/04_feature/abstracts.parquet data/05_model_input/bertopics.npy
   #   deps:
