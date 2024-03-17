@@ -3,6 +3,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 import pandas as pd
 import chromadb
+import time
 
 chroma_client = chromadb.PersistentClient(path="../data/05_model_input/chromadb")
 collection = chroma_client.get_or_create_collection(name="spaceapps")
@@ -12,11 +13,18 @@ model = SentenceTransformer('BAAI/bge-small-en-v1.5')
 
 # TODO upgrade to cross-encoder after semantic search
 def semantic_search_abstracts(text, k):
+    print(f'Creating embedding for {text}')
+    start = time.perf_counter_ns()
     text_embed = model.encode(text)
+    embed_stop = time.perf_counter_ns()
+    print(f'Embedding time: {(embed_stop - start)/1e6:0.4f}ms')
+    print('Running query')
     results = collection.query(
         query_embeddings=text_embed.tolist(),
         n_results=k
     )
+    query_stop = time.perf_counter_ns()
+    print(f'Query time: {(query_stop - embed_stop)/1e6:0.4f}ms')
     scores = []
     titles = []
     texts = []
