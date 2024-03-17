@@ -138,3 +138,20 @@ stages:
       hash: md5
       md5: 38d2c6866f4a5aa4be524d3980489568
       size: 1622987158
+  pdf_to_parquet:
+    cmd: python src/spaceapps2022/pdf_to_parquet.py data/01_raw/pdfs data/04_feature/chunks.parquet
+    deps:
+    - path: data/01_raw/pdfs
+      hash: md5
+      md5: b44eb5773bba1328f6499425a4c9fc55.dir
+      size: 2652111536
+      nfiles: 508
+    - path: src/spaceapps2022/pdf_to_parquet.py
+      hash: md5
+      md5: e1f393c391ee165b15f9c1b11dafbc3f
+      size: 2233
+    outs:
+    - path: data/04_feature/chunks.parquet
+      hash: md5
+      md5: c771f63ba239b0ca59b7b1094c48da21
+      size: 53856
