@@ -1,29 +1,38 @@
 import gradio as gr
 import numpy as np
-from sentence_transformers import util, SentenceTransformer
+from sentence_transformers import SentenceTransformer
 import pandas as pd
+import chromadb
+import time
 
+chroma_client = chromadb.PersistentClient(path="../data/05_model_input/chromadb")
+collection = chroma_client.get_or_create_collection(name="spaceapps")
 
-embeddings = np.load('data/05_model_input/embeddings.npy')
-abs_embeddings = np.load('data/05_model_input/abstract_embeddings.npy')
-df = pd.read_parquet('data/04_feature/text.parquet')
-abs_df = pd.read_parquet('data/04_feature/abstracts.parquet')
 model = SentenceTransformer('BAAI/bge-small-en-v1.5')
 
 
 # TODO upgrade to cross-encoder after semantic search
 def semantic_search_abstracts(text, k):
+    print(f'Creating embedding for {text}')
+    start = time.perf_counter_ns()
     text_embed = model.encode(text)
-    # NOTE using cosine similarity here, but can use other metrics
-    hits = util.semantic_search(text_embed, abs_embeddings, top_k=k)
+    embed_stop = time.perf_counter_ns()
+    print(f'Embedding time: {(embed_stop - start)/1e6:0.4f}ms')
+    print('Running query')
+    results = collection.query(
+        query_embeddings=text_embed.tolist(),
+        n_results=k
+    )
+    query_stop = time.perf_counter_ns()
+    print(f'Query time: {(query_stop - embed_stop)/1e6:0.4f}ms')
     scores = []
     titles = []
     texts = []
-    for i, hit in enumerate(hits[0]):
-        id = hit['corpus_id']
-        scores.append(hit['score'])
-        texts.append(abs_df.iloc[id]['abstract'])
-        titles.append(abs_df.iloc[id]['title'])
+
+    for id, score, doc in zip(results['ids'], results['distances'], results['documents']):
+        scores.append(score)
+        texts.append(doc)
+        titles.append("unknown")
 
     # print(type(text))
     if len(texts) == 1:

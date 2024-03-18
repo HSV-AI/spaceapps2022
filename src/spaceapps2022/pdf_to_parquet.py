@@ -4,7 +4,8 @@ import click
 from llmsherpa.readers import LayoutPDFReader
 
 llmsherpa_api_url = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
-pdf_reader = LayoutPDFReader(llmsherpa_api_url)
+local_sherpa = "http://localhost:5010/api/parseDocument?renderFormat=all"
+pdf_reader = LayoutPDFReader(local_sherpa)
 
 
 # def extract_images(pdf_path, output_path):
@@ -34,27 +35,28 @@ def main(pdf_dir, output_path):
     pages = []
     chunks = []
 
-    try:
-        for pdf_path in pdf_dir.glob('*.pdf'):
-            filepath = str(pdf_path)
-            print(f'Parsing: {filepath}')
-            key = pdf_path.stem
+    for pdf_path in pdf_dir.glob('*.pdf'):
+        filepath = str(pdf_path)
+        print(f'Parsing: {filepath}')
+        key = pdf_path.stem
+        try:
             doc = pdf_reader.read_pdf(filepath)
             for chunk in doc.chunks():
                 text = chunk.to_text()
                 chunks.append(text)
                 ids.append(key)
                 pages.append(chunk.page_idx)
-            # Now extract the images from the PDF
-            # output_dir = Path(output_dir)
-            # output_dir.mkdir(exist_ok=True)
+        except Exception as exc:
+            print(f'Could not parse {filepath}')
 
-            # image_dir = Path(output_dir / "images")
-            # image_dir.mkdir(exist_ok=True)
+        # Now extract the images from the PDF
+        # output_dir = Path(output_dir)
+        # output_dir.mkdir(exist_ok=True)
 
-            # extract_images(pdf_path, image_dir)
-    except Exception as exc:
-        print(f'Stopping early because of: {exc}')
+        # image_dir = Path(output_dir / "images")
+        # image_dir.mkdir(exist_ok=True)
+
+        # extract_images(pdf_path, image_dir)
 
     data = {
         'id': ids,

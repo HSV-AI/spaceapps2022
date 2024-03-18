@@ -148,10 +148,26 @@ stages:
       nfiles: 508
     - path: src/spaceapps2022/pdf_to_parquet.py
       hash: md5
-      md5: e1f393c391ee165b15f9c1b11dafbc3f
-      size: 2233
+      md5: 33ad91f9733966342161a48d5c8a3a48
+      size: 2269
     outs:
     - path: data/04_feature/chunks.parquet
       hash: md5
-      md5: c771f63ba239b0ca59b7b1094c48da21
-      size: 53856
+      md5: 8f79478dd3d217f9efb2446441b7adc2
+      size: 11784393
+  embeddings_to_chromadb:
+    cmd: python src/spaceapps2022/embeddings_to_chromadb.py data/04_feature/abstracts.parquet
+      data/05_model_input/abstract_embeddings.npy data/05_model_input/chromadb
+    deps:
+    - path: data/04_feature/abstracts.parquet
+      hash: md5
+      md5: 0de9036a05a32c81949bb03257bcc304
+      size: 270399724
+    - path: data/05_model_input/abstract_embeddings.npy
+      hash: md5
+      md5: 89697e29e79704c639d3235061e61331
+      size: 852890240
+    - path: src/spaceapps2022/embeddings_to_chromadb.py
+      hash: md5
+      md5: a429dc95dab27e40ebe865c7effed3f2
+      size: 873
