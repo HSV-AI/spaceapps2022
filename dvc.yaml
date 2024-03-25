@@ -63,14 +63,21 @@ stages:
     outs:
       - data/04_feature/chunks.parquet
     
-  parquet_to_embeddings:
-    cmd: python src/spaceapps2022/parquet_to_embeddings.py data/04_feature/text.parquet data/05_model_input/embeddings.npy
+  text_to_embeddings:
+    cmd: python src/spaceapps2022/parquet_to_embeddings.py data/04_feature/text.parquet text data/05_model_input/embeddings.npy
     deps:
       - data/04_feature/text.parquet
       - src/spaceapps2022/parquet_to_embeddings.py
     outs:
       - data/05_model_input/embeddings.npy
-
+  
+  chunks_to_embeddings:
+    cmd: python src/spaceapps2022/parquet_to_embeddings.py data/04_feature/chunks.parquet chunk data/05_model_input/chunks.npy
+    deps:
+      - data/04_feature/chunks.parquet
+      - src/spaceapps2022/parquet_to_embeddings.py
+    outs:
+      - data/05_model_input/chunks.npy
 
   abstracts_to_embeddings:
     cmd: python src/spaceapps2022/abstracts_to_embeddings.py data/04_feature/abstracts.parquet data/05_model_input/abstract_embeddings.npy
@@ -86,6 +93,15 @@ stages:
       - data/04_feature/abstracts.parquet
       - data/05_model_input/abstract_embeddings.npy
       - src/spaceapps2022/embeddings_to_chromadb.py
+    # outs:
+    #   - data/05_model_input/abstract_embeddings.npy
+
+  chunks_to_chromadb:
+    cmd: python src/spaceapps2022/chunks_to_chromadb.py data/04_feature/chunks.parquet data/05_model_input/chunks.npy data/05_model_input/chromadb
+    deps:
+      - data/04_feature/chunks.parquet
+      - data/05_model_input/chunks.npy
+      - src/spaceapps2022/chunks_to_chromadb.py
     # outs:
     #   - data/05_model_input/abstract_embeddings.npy
 

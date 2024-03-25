@@ -6,11 +6,15 @@ import numpy as np
 
 @click.command()
 @click.argument('input_parquet')
+@click.argument('input_key')
 @click.argument('output')
-def main(input_parquet, output):
-    model = SentenceTransformer('msmarco-distilbert-base-v4')
+def main(input_parquet: str, input_key: str, output: str):
+
+    model = SentenceTransformer('BAAI/bge-small-en-v1.5', device='cuda')
     df = pd.read_parquet(input_parquet)
-    embeddings = model.encode(df['text'].tolist())
+
+    embeddings = model.encode(df[input_key].to_list())
+
     np.save(output, embeddings)
 
 

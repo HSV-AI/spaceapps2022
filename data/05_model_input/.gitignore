@@ -2,3 +2,4 @@
 /abstract_embeddings.npy
 /bertopics.npy
 /chromadb
+/chunks.npy

@@ -171,3 +171,53 @@ stages:
       hash: md5
       md5: a429dc95dab27e40ebe865c7effed3f2
       size: 873
+  text_to_embeddings:
+    cmd: python src/spaceapps2022/parquet_to_embeddings.py data/04_feature/text.parquet
+      text data/05_model_input/embeddings.npy
+    deps:
+    - path: data/04_feature/text.parquet
+      hash: md5
+      md5: 0826225a8a4fdc239b7371a568ea5d62
+      size: 18137633
+    - path: src/spaceapps2022/parquet_to_embeddings.py
+      hash: md5
+      md5: 6c967857140b9b8e15f17ac43d44fb8b
+      size: 514
+    outs:
+    - path: data/05_model_input/embeddings.npy
+      hash: md5
+      md5: 819e002f7ef7d33cae82c1ae4e8462c2
+      size: 780416
+  chunks_to_embeddings:
+    cmd: python src/spaceapps2022/parquet_to_embeddings.py data/04_feature/chunks.parquet
+      chunk data/05_model_input/chunks.npy
+    deps:
+    - path: data/04_feature/chunks.parquet
+      hash: md5
+      md5: 8f79478dd3d217f9efb2446441b7adc2
+      size: 11784393
+    - path: src/spaceapps2022/parquet_to_embeddings.py
+      hash: md5
+      md5: 6c967857140b9b8e15f17ac43d44fb8b
+      size: 514
+    outs:
+    - path: data/05_model_input/chunks.npy
+      hash: md5
+      md5: d0fc91a4caa2db639234cb8063f893a6
+      size: 168216704
+  chunks_to_chromadb:
+    cmd: python src/spaceapps2022/chunks_to_chromadb.py data/04_feature/chunks.parquet
+      data/05_model_input/chunks.npy data/05_model_input/chromadb
+    deps:
+    - path: data/04_feature/chunks.parquet
+      hash: md5
+      md5: 8f79478dd3d217f9efb2446441b7adc2
+      size: 11784393
+    - path: data/05_model_input/chunks.npy
+      hash: md5
+      md5: d0fc91a4caa2db639234cb8063f893a6
+      size: 168216704
+    - path: src/spaceapps2022/chunks_to_chromadb.py
+      hash: md5
+      md5: 3c495a589d331c33e7b5848778cc8a4b
+      size: 1050
