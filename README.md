@@ -13,6 +13,13 @@ Updated dependencies to be current:
 - sentence-transformers==2.5.1
 - bertopic==0.16.0
 
+# LLMSherpa
+
+Pulled in LLMSherpa to help with parsing multiple types of documents (specifically for PDFs) into chunks best to use for RAG.
+
+To work locally, run the docker container locally
+```docker run -p 5010:5001 ghcr.io/nlmatics/nlm-ingestor:latest```
+
 # ChromaDB
 
 Switched the storage of the document embeddings to use chromadb instead of the custom approach we built initially. Interesting metrics:

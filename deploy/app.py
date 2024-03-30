@@ -1,12 +1,10 @@
-import gradio as gr
-import numpy as np
-from sentence_transformers import SentenceTransformer
-import pandas as pd
-import chromadb
 import time
+import gradio as gr
+from sentence_transformers import SentenceTransformer
+import chromadb
 
 chroma_client = chromadb.PersistentClient(path="../data/05_model_input/chromadb")
-collection = chroma_client.get_or_create_collection(name="spaceapps")
+abstract_collection = chroma_client.get_or_create_collection(name="spaceapps")
 
 model = SentenceTransformer('BAAI/bge-small-en-v1.5')
 
@@ -19,7 +17,7 @@ def semantic_search_abstracts(text, k):
     embed_stop = time.perf_counter_ns()
     print(f'Embedding time: {(embed_stop - start)/1e6:0.4f}ms')
     print('Running query')
-    results = collection.query(
+    results = abstract_collection.query(
         query_embeddings=text_embed.tolist(),
         n_results=k
     )
@@ -29,7 +27,7 @@ def semantic_search_abstracts(text, k):
     titles = []
     texts = []
 
-    for id, score, doc in zip(results['ids'], results['distances'], results['documents']):
+    for doc_id, score, doc in zip(results['ids'], results['distances'], results['documents']):
         scores.append(score)
         texts.append(doc)
         titles.append("unknown")
@@ -41,21 +39,30 @@ def semantic_search_abstracts(text, k):
 
 
 def semantic_search(text, k):
+    print(f'Creating embedding for {text}')
+    start = time.perf_counter_ns()
     text_embed = model.encode(text)
-    # NOTE using cosine similarity here, but can use other metrics
-    hits = util.semantic_search(text_embed, embeddings, top_k=k)
+    embed_stop = time.perf_counter_ns()
+    print(f'Embedding time: {(embed_stop - start)/1e6:0.4f}ms')
+    print('Running query')
+    results = abstract_collection.query(
+        query_embeddings=text_embed.tolist(),
+        n_results=k
+    )
+    query_stop = time.perf_counter_ns()
+    print(f'Query time: {(query_stop - embed_stop)/1e6:0.4f}ms')
     scores = []
-    files = []
+    titles = []
     texts = []
-    for i, hit in enumerate(hits[0]):
-        id = hit['corpus_id']
-        scores.append(hit['score'])
-        texts.append(df.iloc[id]['text'])
-        files.append(df.iloc[id]['pdf_path'])
+
+    for doc_id, score, doc in zip(results['ids'], results['distances'], results['documents']):
+        scores.append(score)
+        texts.append(doc)
+        titles.append("unknown")
 
     if len(texts) == 1:
-        return *files, *scores, *texts
-    return files, scores, texts
+        return *titles, *scores, *texts
+    return titles, scores, texts
 
 
 examples = [
@@ -96,7 +103,7 @@ with gr.Blocks() as demo:
                         gr.Slider(1, 10, 1, step=1, label='Number of results', value=1)]
                 pdf_button = gr.Button("Explore")
             with gr.Column():
-                output = [gr.components.File(label="PDFs"), gr.components.Textbox(label="Scores"), gr.components.Textbox(label="Raw Text")]
+                output = [gr.components.Textbox(label="Titles"), gr.components.Textbox(label="Scores"), gr.components.Textbox(label="Raw Text")]
 
         pdf_button.click(semantic_search, input, output)
         gr.Examples(examples=examples, inputs=input)

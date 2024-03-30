@@ -340,6 +340,8 @@ kombu==5.3.5
     # via
     #   celery
     #   dvc-task
+llmsherpa==0.1.4
+    # via -r requirements.in
 llvmlite==0.42.0
     # via
     #   numba
@@ -778,6 +780,7 @@ urllib3==2.0.7
     # via
     #   botocore
     #   dulwich
+    #   llmsherpa
     #   requests
 uvicorn==0.27.1
     # via gradio
