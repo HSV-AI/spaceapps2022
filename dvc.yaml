@@ -105,6 +105,12 @@ stages:
     # outs:
     #   - data/05_model_input/abstract_embeddings.npy
 
+  chunks_to_weaviate:
+    cmd: python src/spaceapps2022/chunks_to_weaviate.py data/04_feature/chunks.parquet data/05_model_input/chunks.npy
+    deps:
+      - data/04_feature/chunks.parquet
+      - data/05_model_input/chunks.npy
+      - src/spaceapps2022/chunks_to_weaviate.py
 
   # parquet_to_topics:
   #   cmd: python src/spaceapps2022/parquet_to_topics.py data/04_feature/abstracts.parquet data/05_model_input/bertopics.npy

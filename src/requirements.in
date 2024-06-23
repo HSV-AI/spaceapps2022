@@ -10,7 +10,10 @@ gradio==4.19.2
 
 llmsherpa==0.1.4
 
+llama-cpp-python
+openai
 # transformers
 torch==2.2.1
 sentence-transformers==2.5.1
 bertopic==0.16.0
+weaviate-client==4.6.5
